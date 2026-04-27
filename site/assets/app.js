@@ -64,10 +64,14 @@ async function loadIssues() {
       .map(normalizeIssue);
 
     renderIssues(issues.length ? issues : fallbackIssues, false);
-    status.textContent = issues.length ? `${issues.length} open issues shown` : "No open issues returned";
+    if (status) {
+      status.textContent = issues.length ? `${issues.length} open issues shown` : "No open issues returned";
+    }
   } catch (error) {
     renderIssues(fallbackIssues, true);
-    status.textContent = "Showing fallback issue links";
+    if (status) {
+      status.textContent = "Showing fallback issue links";
+    }
   }
 }
 
@@ -115,7 +119,7 @@ async function loadPostList() {
     target.innerHTML = posts
       .map((post) => `
         <article class="post-card">
-          <time datetime="${escapeHtml(post.date)}">${formatDate(post.date)}</time>
+          <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
           <h3><a href="post.html?post=${encodeURIComponent(post.slug)}">${escapeHtml(post.title)}</a></h3>
           <p>${escapeHtml(post.summary)}</p>
         </article>
@@ -146,7 +150,7 @@ async function loadPost() {
       <header class="post-header">
         <p class="eyebrow">Changelog</p>
         <h1>${escapeHtml(frontMatter.title || "Untitled post")}</h1>
-        ${frontMatter.date ? `<time datetime="${escapeHtml(frontMatter.date)}">${formatDate(frontMatter.date)}</time>` : ""}
+        ${frontMatter.date ? `<time datetime="${escapeHtml(frontMatter.date)}">${escapeHtml(formatDate(frontMatter.date))}</time>` : ""}
       </header>
       <div class="markdown-body">${renderMarkdown(body)}</div>
     `;
@@ -261,8 +265,21 @@ function renderInline(value) {
   return escapeHtml(value)
     .replace(/`([^`]+)`/g, "<code>$1</code>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label, href) => {
+      const safeHref = sanitizeMarkdownHref(href);
+      return `<a href="${escapeHtml(safeHref)}">${label}</a>`;
+    });
+}
+
+function sanitizeMarkdownHref(href) {
+  const trimmed = String(href).trim();
+  if (!trimmed) return "#";
+
+  if (/^(https?:|mailto:|tel:)/i.test(trimmed)) return trimmed;
+  if (/^[./#?]/.test(trimmed)) return trimmed;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(trimmed)) return "#";
+
+  return trimmed;
 }
 
 function escapeHtml(value) {

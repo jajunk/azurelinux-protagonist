@@ -214,7 +214,7 @@ h3 {
 .status-pill {
   display: inline-flex;
   width: fit-content;
-  border: 1px solid currentColor;
+  border: 1px solid currentcolor;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 800;

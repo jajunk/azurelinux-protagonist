@@ -13,7 +13,7 @@ There is no downloadable ProtagonistOS desktop image yet. That is intentional: t
 ## What is known
 
 - Azure Linux 3.0 is a plausible but difficult base for a custom desktop distribution.
-- The target direction remains a COSMIC desktop layer unless the open desktop-target decision changes that.
+- The target direction is now KDE-first, formalized by ADR-0003 after the original dashboard baseline was drafted.
 - The repository is the source of truth for current technical state.
 - GitHub Issues are the active workflow surface for blockers and near-term tasks.
 
@@ -28,7 +28,7 @@ Until hardware rendering is proven, desktop performance claims would be prematur
 - Inspect the Mesa spec and document the active hardware-driver build path.
 - Define the Mesa enablement plan.
 - Create the desktop package gap matrix.
-- Resolve the first desktop target decision.
+- Keep active planning aligned with the KDE desktop decision.
 - Define the minimal ISO or image build path.
 
 This dashboard will track those workstreams publicly as the project moves from planning into build validation.
