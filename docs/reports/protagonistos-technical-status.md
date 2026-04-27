@@ -10,10 +10,14 @@ source_inputs:
   - README.md
   - docs/current-state/azure-linux-baseline.md
   - docs/current-state/desktop-performance-reality.md
+  - docs/current-state/installer-and-iso-path.md
+  - docs/current-state/mesa-hardware-driver-plan.md
   - docs/investigations/azure-linux-desktop-gaps.md
+  - docs/investigations/kde-package-gap-matrix.md
   - docs/current-state/environment-setup.md
   - docs/decisions/ADR-0001-project-workflow-source-of-truth.md
   - docs/decisions/ADR-0002-branching-upstream-sync-and-access-policy.md
+  - docs/decisions/ADR-0003-desktop-environment.md
 ---
 
 # ProtagonistOS Technical Status
@@ -49,11 +53,16 @@ Azure Linux 3.0
 
 Mesa hardware acceleration is the first hard blocker.
 
+Current inspection result:
+
+- `SPECS/mesa/mesa.spec` sets `with_hardware` to `0`.
+- The active Gallium driver list is `swrast,virgl`.
+- `iris` and `radeonsi` macros exist but are not effective while `with_hardware` remains disabled.
+- The recommended first patch is a narrow ProtagonistOS Gallium path: `swrast,virgl,iris,radeonsi`.
+
 Required first work:
 
-- inspect `SPECS/mesa/`
-- identify the current `-Dgallium-drivers` configuration
-- enable `iris` and `radeonsi`
+- implement the Mesa spec patch described in `docs/current-state/mesa-hardware-driver-plan.md`
 - rebuild Mesa on a Linux host
 - confirm expected DRI artifacts are present
 - validate hardware rendering on Intel and AMD systems
@@ -75,16 +84,20 @@ Active current-state docs:
 - `docs/current-state/azure-linux-baseline.md`
 - `docs/current-state/desktop-performance-reality.md`
 - `docs/current-state/environment-setup.md`
+- `docs/current-state/installer-and-iso-path.md`
+- `docs/current-state/mesa-hardware-driver-plan.md`
 
 Active investigation docs:
 
 - `docs/investigations/azure-linux-desktop-gaps.md`
+- `docs/investigations/kde-package-gap-matrix.md`
 - `docs/investigations/personal-ai-workflow-surface.md`
 
 Active workflow decision:
 
 - `docs/decisions/ADR-0001-project-workflow-source-of-truth.md`
 - `docs/decisions/ADR-0002-branching-upstream-sync-and-access-policy.md`
+- `docs/decisions/ADR-0003-desktop-environment.md`
 
 Legacy detailed reports still present:
 
@@ -94,22 +107,24 @@ Legacy detailed reports still present:
 - `docs/desktop-security-posture.md`
 - `docs/package-management.md`
 
-## Immediate Next Issues to Create
+## Immediate Next Engineering Issues
 
-Create GitHub Issues for:
+The initial documentation sprint has enough information to close the first planning issues for Mesa inspection, Mesa patch strategy, KDE package gap inventory, desktop decision, and first image target.
 
-1. Inspect `SPECS/mesa/` and document current Gallium driver build flags.
-2. Patch Mesa spec to enable `iris` and `radeonsi`.
-3. Define the first Linux build host.
-4. Create a package gap matrix for desktop prerequisites.
-5. Define the first KDE package tranche and acceptance criteria.
-6. Define the first hardware validation matrix.
-7. Create the first minimal image target and acceptance criteria.
+Next implementation issues should be:
+
+1. Patch `SPECS/mesa/mesa.spec` to enable the narrow ProtagonistOS Gallium set: `swrast,virgl,iris,radeonsi`.
+2. Define the first Linux build host.
+3. Import or package `qtwayland`.
+4. Import or package `libdisplay-info`.
+5. Import or package `xdg-desktop-portal`.
+6. Import or package `wireplumber`.
+7. Expand the KDE Frameworks dependency list from actual KWin and Plasma Workspace build requirements.
+8. Define the first hardware validation matrix.
 
 ## Open Decisions
 
 - first official Linux build host
 - first hardware validation targets
-- KDE scope for milestone one: core session bring-up or full Plasma baseline
-- first image artifact: command-line ISO, graphical ISO, or staged package build
+- exact first KDE package tranche from KWin/Plasma source dependency inspection
 - SELinux enforcement strategy for early graphical builds

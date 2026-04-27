@@ -27,6 +27,8 @@ Use this section for documents that describe the current technical reality of Pr
 - [Azure Linux baseline](current-state/azure-linux-baseline.md)
 - [Desktop performance reality](current-state/desktop-performance-reality.md)
 - [Environment setup](current-state/environment-setup.md)
+- [Installer and ISO path](current-state/installer-and-iso-path.md)
+- [Mesa hardware driver plan](current-state/mesa-hardware-driver-plan.md)
 
 ## Decisions
 
@@ -41,6 +43,7 @@ Use this section for Architecture Decision Records and other durable project dec
 Use this section for research notes, technical evaluations, unresolved questions, and exploratory reports.
 
 - [Azure Linux desktop gaps](investigations/azure-linux-desktop-gaps.md)
+- [KDE package gap matrix](investigations/kde-package-gap-matrix.md)
 - [Personal human-AI workflow surface](investigations/personal-ai-workflow-surface.md)
 
 ## Reports

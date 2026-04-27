@@ -108,21 +108,17 @@ Known or likely prerequisites include:
 
 ### Problem
 
-The repository guidance currently references COSMIC as the intended desktop path, but recent project direction may have shifted toward KDE and Wayland.
+The desktop target is now resolved by ADR-0003: KDE is the canonical ProtagonistOS desktop environment.
 
-This must be resolved before package work goes too far.
+### Current decision
 
-### Required decision
-
-Choose one first graphical target for the Azure Linux path:
-
-- COSMIC on Wayland
-- KDE Plasma on Wayland
-- minimal Wayland compositor target for build validation only
+- KDE is the first desktop target.
+- Minimal Wayland compositor setups may still be used only as temporary graphics/build validation tools.
+- COSMIC research remains historical context, not active package direction.
 
 ### Why this matters
 
-COSMIC and KDE imply different dependency trees, packaging workload, SELinux policy work, default apps, and validation targets.
+KDE implies a substantial Plasma/KWin/KDE Frameworks dependency tree. The first package matrix is tracked in [KDE package gap matrix](kde-package-gap-matrix.md).
 
 ### Acceptance criteria
 
@@ -171,17 +167,17 @@ Azure Linux image creation is controlled through toolkit image configs. A Protag
 
 ### Required work
 
-- Identify the closest existing Azure Linux image config.
-- Create a ProtagonistOS minimal image config.
-- Add only the packages required to boot, log in, and validate the target graphical path.
+- Use `toolkit/imageconfigs/core-efi.json` as the first bootable image target.
+- Build a ProtagonistOS-specific graphical image config only after Mesa and the first KDE prerequisite tranche exist.
+- Add only the packages required to boot, log in, and validate the target graphical path when that config is created.
 - Keep branding and default app decisions out of the first image unless required for boot or identity.
 
 ### Acceptance criteria
 
-- A minimal image config exists under `toolkit/imageconfigs/` or an equivalent project path.
-- The image build command is documented.
-- The image can be rebuilt from a clean Linux build host.
-- The image boots in at least one VM or physical target.
+- The first image build command is documented.
+- `core-efi.json` can be rebuilt from a clean Linux build host.
+- The resulting image boots in at least one VM target.
+- A later ProtagonistOS-specific graphical image config is created only after the package prerequisites exist.
 
 ## Gap 6: Build Host and Reproducibility
 
@@ -260,7 +256,11 @@ Path:
 
 `SPECS/mesa/`
 
-Goal:
+Status:
+
+Complete. See [Mesa hardware driver plan](../current-state/mesa-hardware-driver-plan.md).
+
+Original goal:
 
 Find the current build flags and determine the exact patch required to enable `iris` and `radeonsi`.
 
@@ -271,6 +271,10 @@ Output:
 - expected RPM output
 
 ### Task 2: Create desktop package gap matrix
+
+Status:
+
+Complete for the first KDE planning pass. See [KDE package gap matrix](kde-package-gap-matrix.md).
 
 Goal:
 
@@ -288,6 +292,10 @@ Columns:
 
 ### Task 3: Resolve desktop target contradiction
 
+Status:
+
+Complete. See [ADR-0003: Canonical desktop environment](../decisions/ADR-0003-desktop-environment.md).
+
 Goal:
 
 Decide whether the Azure Linux path is targeting COSMIC, KDE, or a minimal Wayland validation target first.
@@ -297,6 +305,10 @@ Output:
 `docs/decisions/ADR-0003-desktop-environment.md`
 
 ### Task 4: Define first image target
+
+Status:
+
+Complete. See [Installer and ISO path](../current-state/installer-and-iso-path.md).
 
 Goal:
 
@@ -325,12 +337,13 @@ Output:
 
 Do not start with a polished desktop.
 
-Start with the smallest image that proves the graphics and build pipeline:
+Start with the smallest artifact sequence that proves the graphics and build pipeline:
 
-1. Azure Linux base
-2. rebuilt Mesa with hardware drivers
-3. minimal Wayland-capable graphical session or selected desktop core
-4. enough instrumentation to prove renderer, login, and frame path
+1. Mesa package proof.
+2. `core-efi.json` image proof.
+3. Mesa-consuming image proof.
+4. minimal Wayland-capable graphical session or selected KDE session core.
+5. enough instrumentation to prove renderer, login, and frame path.
 
 Once that works, build upward.
 

@@ -51,6 +51,10 @@ Azure Linux 3.0 (base)
 
 | Document | Description |
 |---|---|
+| [docs/README.md](docs/README.md) | Documentation index and source-of-truth policy |
+| [docs/current-state/mesa-hardware-driver-plan.md](docs/current-state/mesa-hardware-driver-plan.md) | Current Mesa build inspection and first hardware-driver patch strategy |
+| [docs/investigations/kde-package-gap-matrix.md](docs/investigations/kde-package-gap-matrix.md) | KDE-first package availability and gap matrix |
+| [docs/current-state/installer-and-iso-path.md](docs/current-state/installer-and-iso-path.md) | First image artifact and later ISO path |
 | [CUSTOM_DISTRO_FEASIBILITY_REPORT.md](CUSTOM_DISTRO_FEASIBILITY_REPORT.md) | Full technical feasibility report: build pipeline, package ecosystem, early desktop implementation analysis, risk register, five-phase strategy |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | Session history, key discoveries, decisions made, open questions, and recommended next steps |
 

@@ -65,6 +65,8 @@ Current state:
 - [Azure Linux baseline](docs/current-state/azure-linux-baseline.md)
 - [Desktop performance reality](docs/current-state/desktop-performance-reality.md)
 - [Environment setup](docs/current-state/environment-setup.md)
+- [Installer and ISO path](docs/current-state/installer-and-iso-path.md)
+- [Mesa hardware driver plan](docs/current-state/mesa-hardware-driver-plan.md)
 
 Decisions:
 - [ADR-0001: Project workflow and source of truth](docs/decisions/ADR-0001-project-workflow-source-of-truth.md)
@@ -73,6 +75,7 @@ Decisions:
 
 Investigations:
 - [Azure Linux desktop gaps](docs/investigations/azure-linux-desktop-gaps.md)
+- [KDE package gap matrix](docs/investigations/kde-package-gap-matrix.md)
 - [Personal human-AI workflow surface](docs/investigations/personal-ai-workflow-surface.md)
 
 Reports:
@@ -112,14 +115,13 @@ Priority order for the first engineering work:
 3. KDE session baseline — `plasma-workspace`, `kwin`, `plasma-desktop`
 4. KDE login/session integration — `sddm`, session startup, and desktop portals
 
-Immediate workflow tasks should become GitHub Issues:
-1. Inspect `SPECS/mesa/` and document current Gallium driver build flags
-2. Patch Mesa spec to enable `iris` and `radeonsi`
-3. Define the first Linux build host
-4. Create a package gap matrix for desktop prerequisites
-5. Define the first KDE package tranche and acceptance criteria
-6. Define the first hardware validation matrix
-7. Create the first minimal image target and acceptance criteria
+Immediate follow-up tasks should become GitHub Issues:
+1. Patch `SPECS/mesa/mesa.spec` to enable the narrow ProtagonistOS Gallium set: `swrast,virgl,iris,radeonsi`
+2. Define the first Linux build host
+3. Package or import `qtwayland`, `libdisplay-info`, `xdg-desktop-portal`, and `wireplumber`
+4. Expand the KDE Frameworks dependency list from actual KWin and Plasma Workspace build requirements
+5. Define the first hardware validation matrix
+6. Validate `toolkit/imageconfigs/core-efi.json` on the first Linux build host
 
 ## Key Constraints
 
