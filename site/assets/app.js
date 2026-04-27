@@ -99,7 +99,7 @@ function renderIssues(issues, isFallback) {
         .join("");
       const fallbackClass = isFallback ? " fallback" : "";
       return `
-        <a class="issue-card${fallbackClass}" href="${issue.html_url}">
+        <a class="issue-card${fallbackClass}" href="${escapeHtml(sanitizeMarkdownHref(issue.html_url))}">
           <strong>#${issue.number} ${escapeHtml(issue.title)}</strong>
           <span class="issue-labels">${labels}</span>
         </a>
