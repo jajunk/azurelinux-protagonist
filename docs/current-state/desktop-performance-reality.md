@@ -97,7 +97,7 @@ Implication for ProtagonistOS:
 
 ## Engineering Priority Order
 
-1. Confirm Azure Linux package/build path for Mesa changes.
+1. Implement the Mesa package/build path documented in [Mesa hardware driver plan](mesa-hardware-driver-plan.md).
 2. Enable and build Mesa hardware drivers needed for realistic desktop use.
 3. Validate Intel and AMD graphics on physical hardware.
 4. Establish baseline benchmarks against Fedora or another working desktop distribution.
@@ -150,7 +150,6 @@ A graphical ProtagonistOS ISO should not be considered technically credible unti
 
 ## Open Questions
 
-- What is the exact Azure Linux packaging change required to enable `iris` and `radeonsi`?
 - Does Azure Linux's current kernel configuration support the target graphics stack cleanly?
 - Which display manager and greeter path will ProtagonistOS use?
 - Which KDE session path should define benchmark baselines first (minimal session bring-up or full Plasma desktop)?

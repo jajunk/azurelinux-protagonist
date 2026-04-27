@@ -92,6 +92,8 @@ The first desktop-enablement sequence is:
 
 Mesa must be rebuilt for hardware desktop support.
 
+The current inspection result is documented in [Mesa hardware driver plan](mesa-hardware-driver-plan.md). The active Azure Linux Mesa Gallium path is currently `swrast,virgl` because `SPECS/mesa/mesa.spec` sets `with_hardware` to `0`.
+
 The immediate requirement is to update the Mesa spec so the build includes the Gallium drivers required for realistic workstation graphics support.
 
 Minimum required targets:
@@ -127,15 +129,18 @@ A Mac or VM can be useful for reading, editing, or early inspection, but it is n
 
 ## Open Questions
 
-- What exact Mesa spec changes are required for `iris` and `radeonsi`?
-- Are all required Mesa dependencies already present in Azure Linux 3.0?
-- Which desktop prerequisites are missing from `SPECS/` and `SPECS-EXTENDED/`?
-- Which KDE package tranche should define the first desktop milestone (core session only vs full Plasma desktop)?
-- What is the first minimal image target: command-line ISO, graphical ISO, or staged build artifact?
-- Which physical machine should be the first validation target?
+- Which Linux host should run the first Mesa package build and image build?
+- Which physical machines should make up the first Intel and AMD validation targets?
+- Which exact KWin and Plasma Workspace dependency versions should define the first KDE import tranche?
+
+Resolved planning questions:
+
+- The first Mesa spec change should enable a narrow ProtagonistOS Gallium set: `swrast,virgl,iris,radeonsi`.
+- The first KDE gap matrix is recorded in [KDE package gap matrix](../investigations/kde-package-gap-matrix.md).
+- The first image target is `toolkit/imageconfigs/core-efi.json`, documented in [Installer and ISO path](installer-and-iso-path.md).
 
 ## Current Recommendation
 
-Treat Azure Linux as an engineering research base until a minimal hardware-accelerated graphical image can be produced.
+Treat Azure Linux as an engineering research base until the package and image pipeline can produce a bootable image that consumes the first rebuilt desktop package.
 
-Do not assume that the distribution vision is validated just because the repository builds. For ProtagonistOS, the first meaningful proof is a minimal ISO that boots on target-class hardware and reaches a hardware-accelerated desktop or well-defined graphical session path.
+Do not assume that the distribution vision is validated just because the repository builds. For ProtagonistOS, the first meaningful proof is a `core-efi` image from this fork, followed by a Mesa-consuming image that reaches hardware rendering on target-class Intel and AMD systems. A graphical ISO comes after that.
