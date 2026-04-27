@@ -63,7 +63,7 @@ async function loadIssues() {
       .slice(0, 8)
       .map(normalizeIssue);
 
-    renderIssues(issues.length ? issues : fallbackIssues, false);
+    renderIssues(issues, false);
     if (status) {
       status.textContent = issues.length ? `${issues.length} open issues shown` : "No open issues returned";
     }
@@ -91,6 +91,11 @@ function normalizeIssue(issue) {
 
 function renderIssues(issues, isFallback) {
   const list = document.querySelector("#issue-list");
+  if (!issues.length) {
+    list.innerHTML = `<p class="empty-state">No open issues right now.</p>`;
+    return;
+  }
+
   list.innerHTML = issues
     .map((issue) => {
       const labels = issue.labels
@@ -262,13 +267,27 @@ function renderMarkdown(markdown) {
 }
 
 function renderInline(value) {
+  const source = String(value);
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let html = "";
+  let lastIndex = 0;
+  let match;
+
+  while ((match = linkPattern.exec(source)) !== null) {
+    html += renderInlineText(source.slice(lastIndex, match.index));
+    const safeHref = sanitizeMarkdownHref(match[2]);
+    html += `<a href="${escapeHtml(safeHref)}">${escapeHtml(match[1])}</a>`;
+    lastIndex = match.index + match[0].length;
+  }
+
+  html += renderInlineText(source.slice(lastIndex));
+  return html;
+}
+
+function renderInlineText(value) {
   return escapeHtml(value)
     .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label, href) => {
-      const safeHref = sanitizeMarkdownHref(href);
-      return `<a href="${escapeHtml(safeHref)}">${label}</a>`;
-    });
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
 }
 
 function sanitizeMarkdownHref(href) {
