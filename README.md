@@ -54,6 +54,15 @@ Azure Linux 3.0 (base)
 | [CUSTOM_DISTRO_FEASIBILITY_REPORT.md](CUSTOM_DISTRO_FEASIBILITY_REPORT.md) | Full technical feasibility report: build pipeline, package ecosystem, early desktop implementation analysis, risk register, five-phase strategy |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | Session history, key discoveries, decisions made, open questions, and recommended next steps |
 
+## Source of Truth
+
+To avoid split ownership and duplicate maintenance, this repository uses exactly two sources of truth:
+
+- Work status: open GitHub Issues and Pull Requests
+- Project state: Git history on `main`
+
+The ProtagonistOS dashboard is published from `main` through `.github/workflows/pages.yml`.
+
 ---
 
 # Azure Linux

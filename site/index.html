@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ProtagonistOS project dashboard: current state, project health, open issues, and changelog for the downstream Azure Linux desktop effort.">
+    <title>ProtagonistOS Dashboard</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body data-page="dashboard">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="ProtagonistOS dashboard home">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <span>
+          <strong>ProtagonistOS</strong>
+          <small>Engineering dashboard</small>
+        </span>
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="#state">State</a>
+        <a href="#health">Health</a>
+        <a href="#issues">Issues</a>
+        <a href="#changelog">Changelog</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero section-band">
+        <div class="hero-copy">
+          <p class="eyebrow">Downstream Azure Linux 3.0 fork</p>
+          <h1>ProtagonistOS</h1>
+          <p class="hero-text">
+            A transparent desktop-distro engineering effort built from Azure Linux 3.0, currently investigating the path to a COSMIC-based, hardware-accelerated workstation image.
+          </p>
+          <div class="hero-actions" aria-label="Project links">
+            <a class="button button-primary" href="https://github.com/jajunk/azurelinux-protagonist">GitHub Repo</a>
+            <a class="button" href="https://github.com/jajunk/azurelinux-protagonist/issues">Open Issues</a>
+            <a class="button" href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/docs/reports/protagonistos-technical-status.md">Technical Status</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Current phase">
+          <span class="status-pill pending">Planning / Pre-build</span>
+          <dl class="status-list">
+            <div>
+              <dt>Desktop package layer</dt>
+              <dd>Not started</dd>
+            </div>
+            <div>
+              <dt>First hard blocker</dt>
+              <dd>Mesa hardware enablement</dd>
+            </div>
+            <div>
+              <dt>Build validation</dt>
+              <dd>Linux host required</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section id="state" class="content-section">
+        <div class="section-heading">
+          <p class="eyebrow">Current state</p>
+          <h2>Pre-build, documentation-led, blocker-aware.</h2>
+        </div>
+        <div class="card-grid state-grid">
+          <article class="metric-card blocked">
+            <span class="card-kicker">Mesa hardware path</span>
+            <h3>Blocked / under inspection</h3>
+            <p>The active build path must be verified and adjusted for Intel <code>iris</code> and AMD <code>radeonsi</code> rendering.</p>
+          </article>
+          <article class="metric-card pending">
+            <span class="card-kicker">Linux build host</span>
+            <h3>Not finalized</h3>
+            <p>macOS is useful for editing and coordination, but package and image validation require Linux.</p>
+          </article>
+          <article class="metric-card unknown">
+            <span class="card-kicker">Desktop packages</span>
+            <h3>Not started</h3>
+            <p>The COSMIC layer and prerequisite package gap matrix are still being defined.</p>
+          </article>
+          <article class="metric-card pending">
+            <span class="card-kicker">Image path</span>
+            <h3>Not defined</h3>
+            <p>The first useful artifact may be a CLI ISO, minimal Wayland image, or staged package build.</p>
+          </article>
+          <article class="metric-card healthy">
+            <span class="card-kicker">Documentation</span>
+            <h3>Active</h3>
+            <p>The repository is the source of truth for current state, decisions, investigations, and reports.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section architecture">
+        <div class="section-heading">
+          <p class="eyebrow">Architecture path</p>
+          <h2>The intended stack builds upward from a hardened RPM base.</h2>
+        </div>
+        <ol class="architecture-list" aria-label="ProtagonistOS architecture path">
+          <li>
+            <span>01</span>
+            <strong>Azure Linux 3.0 base</strong>
+            <p>RPM packaging, hardened defaults, reproducible source/signature handling, and the Go-based toolkit.</p>
+          </li>
+          <li>
+            <span>02</span>
+            <strong>Mesa rebuild</strong>
+            <p>Enable and validate Intel <code>iris</code> and AMD <code>radeonsi</code> Gallium driver paths.</p>
+          </li>
+          <li>
+            <span>03</span>
+            <strong>Desktop prerequisites</strong>
+            <p>Package or verify components such as <code>libseat</code>, <code>libdisplay-info</code>, and desktop portals.</p>
+          </li>
+          <li>
+            <span>04</span>
+            <strong>COSMIC core</strong>
+            <p>Bring up compositor, session, greeter, settings daemon, and portal integration.</p>
+          </li>
+          <li>
+            <span>05</span>
+            <strong>COSMIC shell and apps</strong>
+            <p>Layer panel, settings, files, terminal, screenshots, applets, and product defaults after the core path works.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="health" class="content-section">
+        <div class="section-heading">
+          <p class="eyebrow">Project health</p>
+          <h2>Readiness is tracked by engineering proof, not optimism.</h2>
+        </div>
+        <div class="health-board">
+          <article>
+            <span class="status-pill blocked">Blocked</span>
+            <h3>Graphics readiness</h3>
+            <p>Hardware acceleration is the first credibility gate for any graphical ProtagonistOS image.</p>
+          </article>
+          <article>
+            <span class="status-pill pending">Pending</span>
+            <h3>Build reproducibility</h3>
+            <p>A canonical Linux build host and first clean build need to be defined and recorded.</p>
+          </article>
+          <article>
+            <span class="status-pill unknown">Unknown</span>
+            <h3>Packaging readiness</h3>
+            <p>The desktop prerequisite and COSMIC package gap matrix is not complete yet.</p>
+          </article>
+          <article>
+            <span class="status-pill pending">Pending</span>
+            <h3>Validation readiness</h3>
+            <p>Intel and AMD hardware targets need to be selected before desktop claims are meaningful.</p>
+          </article>
+          <article>
+            <span class="status-pill healthy">Healthy</span>
+            <h3>Decision tracking</h3>
+            <p>The repo already separates current state, investigations, durable decisions, and reports.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="issues" class="content-section split-section">
+        <div class="section-heading">
+          <p class="eyebrow">Under development</p>
+          <h2>Live sprint issues</h2>
+          <p>Open GitHub Issues are loaded from the public API when available. Static links appear if the API is unavailable.</p>
+        </div>
+        <div class="issue-panel">
+          <div class="panel-header">
+            <span id="issue-status">Loading issues...</span>
+            <a href="https://github.com/jajunk/azurelinux-protagonist/issues">View all</a>
+          </div>
+          <div id="issue-list" class="issue-list" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="changelog" class="content-section split-section">
+        <div class="section-heading">
+          <p class="eyebrow">Changelog</p>
+          <h2>Engineering notes and dashboard updates</h2>
+          <p>Posts are Markdown files in the repository so the public story stays close to the technical source of truth.</p>
+        </div>
+        <div id="post-list" class="post-list" aria-live="polite"></div>
+      </section>
+
+      <section class="content-section link-section">
+        <div class="section-heading">
+          <p class="eyebrow">Source of truth</p>
+          <h2>Authoritative project documents</h2>
+        </div>
+        <div class="doc-links">
+          <a href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/README.md">Project README</a>
+          <a href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/docs/README.md">Documentation Index</a>
+          <a href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/docs/current-state/azure-linux-baseline.md">Azure Linux Baseline</a>
+          <a href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/docs/investigations/azure-linux-desktop-gaps.md">Desktop Gaps</a>
+          <a href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/CUSTOM_DISTRO_FEASIBILITY_REPORT.md">Feasibility Report</a>
+          <a href="https://github.com/jajunk/azurelinux-protagonist/blob/sandbox/RETROSPECTIVE.md">Retrospective</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>ProtagonistOS is an independent downstream fork effort. Azure Linux and COSMIC are referenced descriptively; this dashboard does not imply Microsoft or System76 endorsement.</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
