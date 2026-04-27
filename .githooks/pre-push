@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+remote_name="${1:-}"
+remote_url="${2:-}"
+
+if [[ -z "${remote_name}" ]]; then
+  echo "ERROR: pre-push could not determine remote name." >&2
+  exit 1
+fi
+
+if [[ "${remote_name}" != "origin" ]]; then
+  echo "ERROR: pushing to '${remote_name}' is blocked by repository policy." >&2
+  echo "Only 'origin' is allowed from this clone." >&2
+  exit 1
+fi
+
+if [[ "${remote_url}" == *"microsoft/azurelinux"* ]]; then
+  echo "ERROR: direct push to upstream URL is blocked." >&2
+  exit 1
+fi
+
+exit 0

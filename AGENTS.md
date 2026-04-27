@@ -127,3 +127,4 @@ Immediate workflow tasks should become GitHub Issues:
 - **Upstream Azure Linux content is intentionally preserved** — treat `SPECS/` and `SPECS-EXTENDED/` as the upstream package library; new desktop specs are additions, not replacements
 - **Mesa must be recompiled** for desktop GPU support — it cannot be added as a separate package
 - **Linux build host required** — all build validation must happen on a Linux machine
+- **PR creation must be fork-targeted by default** — use `scripts/gh-pr-safe` and include `--repo jajunk/azurelinux-protagonist`; upstream PR creation from this clone is blocked unless an explicit one-command override is intentionally set
