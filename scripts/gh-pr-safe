@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ALLOWED_REPO="${ALLOWED_PR_REPO:-jajunk/azurelinux-protagonist}"
+OVERRIDE="${ALLOW_UPSTREAM_PR:-0}"
+
+if [[ "${OVERRIDE}" == "1" ]]; then
+  echo "WARN: ALLOW_UPSTREAM_PR=1 set; bypassing repo guard." >&2
+fi
+
+repo_arg=""
+next_is_repo=0
+for arg in "$@"; do
+  if [[ "${next_is_repo}" == "1" ]]; then
+    repo_arg="${arg}"
+    next_is_repo=0
+    continue
+  fi
+
+  if [[ "${arg}" == "--repo" || "${arg}" == "-R" ]]; then
+    next_is_repo=1
+    continue
+  fi
+done
+
+if [[ "${OVERRIDE}" != "1" ]]; then
+  if [[ -z "${repo_arg}" ]]; then
+    echo "ERROR: --repo is required. Allowed repo: ${ALLOWED_REPO}" >&2
+    exit 2
+  fi
+
+  if [[ "${repo_arg}" != "${ALLOWED_REPO}" ]]; then
+    echo "ERROR: PR target '${repo_arg}' denied. Allowed repo: ${ALLOWED_REPO}" >&2
+    exit 2
+  fi
+fi
+
+exec gh pr create "$@"

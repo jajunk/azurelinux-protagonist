@@ -1,0 +1,12 @@
+---
+description: Enforce strict fork-only PR creation workflow
+alwaysApply: true
+---
+
+# Strict PR Target Policy
+
+- Never run raw `gh pr create`.
+- Always use `scripts/gh-pr-safe` for pull request creation.
+- Every PR command must include `--repo jajunk/azurelinux-protagonist`.
+- Never target `microsoft/azurelinux` from this clone unless the user explicitly asks and `ALLOW_UPSTREAM_PR=1` is intentionally set for that one command.
+- If a command could open a PR to upstream, stop and ask for confirmation first.

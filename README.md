@@ -54,6 +54,22 @@ Azure Linux 3.0 (base)
 | [CUSTOM_DISTRO_FEASIBILITY_REPORT.md](CUSTOM_DISTRO_FEASIBILITY_REPORT.md) | Full technical feasibility report: build pipeline, package ecosystem, early desktop implementation analysis, risk register, five-phase strategy |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | Session history, key discoveries, decisions made, open questions, and recommended next steps |
 
+## Repository Guardrails
+
+This repository includes strict local guardrails to prevent accidental upstream pull requests from this clone.
+
+Setup:
+
+```bash
+./scripts/install-repo-guards.sh
+```
+
+Validation:
+
+```bash
+./scripts/validate-repo-guards.sh
+```
+
 ---
 
 # Azure Linux
