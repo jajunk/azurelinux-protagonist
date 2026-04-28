@@ -74,6 +74,12 @@ Validation:
 ./scripts/validate-repo-guards.sh
 ```
 
+Project-state drift validation:
+
+```bash
+./scripts/validate-project-state.sh
+```
+
 ---
 
 # Azure Linux

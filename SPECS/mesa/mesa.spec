@@ -1,4 +1,5 @@
 %ifnarch s390x
+%global protagonist_desktop_gallium 1
 %global with_hardware 0
 %global with_vulkan_hw 1
 %global with_vdpau 0
@@ -45,6 +46,14 @@
 %endif
 %global with_radeonsi 1
 %global with_vmware 1
+%endif
+
+%if 0%{?protagonist_desktop_gallium}
+%ifarch %{ix86} x86_64
+%global protagonist_gallium_drivers swrast,virgl,iris,radeonsi
+%else
+%global protagonist_gallium_drivers swrast,virgl,radeonsi
+%endif
 %endif
 
 %if !0%{?rhel}
@@ -392,7 +401,9 @@ export MESON_PACKAGE_CACHE_DIR="%{cargo_registry}/"
   -Dplatforms=x11,wayland \
   -Ddri3=enabled \
   -Dosmesa=true \
-%if 0%{?with_hardware}
+%if 0%{?protagonist_desktop_gallium}
+  -Dgallium-drivers=%{protagonist_gallium_drivers} \
+%elif 0%{?with_hardware}
   -Dgallium-drivers=swrast,virgl,nouveau%{?with_r300:,r300}%{?with_crocus:,crocus}%{?with_i915:,i915}%{?with_iris:,iris}%{?with_vmware:,svga}%{?with_radeonsi:,radeonsi}%{?with_r600:,r600}%{?with_freedreno:,freedreno}%{?with_etnaviv:,etnaviv}%{?with_tegra:,tegra}%{?with_vc4:,vc4}%{?with_v3d:,v3d}%{?with_kmsro:,kmsro}%{?with_lima:,lima}%{?with_panfrost:,panfrost} \
 %else
   -Dgallium-drivers=swrast,virgl \
@@ -595,6 +606,15 @@ popd
 %{_libdir}/dri/kms_swrast_dri.so
 %{_libdir}/dri/swrast_dri.so
 %{_libdir}/dri/virtio_gpu_dri.so
+
+%if 0%{?protagonist_desktop_gallium}
+%ifnarch s390x
+%{_libdir}/dri/radeonsi_dri.so
+%endif
+%ifarch %{ix86} x86_64
+%{_libdir}/dri/iris_dri.so
+%endif
+%endif
 
 %if 0%{?with_hardware}
 %if 0%{?with_r300}

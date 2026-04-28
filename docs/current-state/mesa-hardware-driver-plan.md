@@ -3,7 +3,7 @@ title: Mesa Hardware Driver Plan
 status: active
 source_of_truth: github
 branch: dev
-last_reviewed: 2026-04-27
+last_reviewed: 2026-04-28
 drive_copy: none
 source_inputs:
   - GitHub Issue #1
@@ -115,23 +115,23 @@ The first ProtagonistOS desktop Mesa build must produce at minimum:
 
 Do not remove `swrast` or `virgl`. They remain useful for rescue, CI, VM, and headless validation paths.
 
-## Patch Strategy
+## Implemented Patch Strategy
 
 The smallest safe downstream patch is not to enable every latent hardware driver blindly. Flipping `with_hardware` from `0` to `1` would pull in a much broader set of Gallium drivers on x86_64, including drivers that are not part of the first ProtagonistOS hardware target.
 
-For the first patch, use a ProtagonistOS-specific narrow hardware path:
+As of 2026-04-28, `SPECS/mesa/mesa.spec` has a ProtagonistOS-specific narrow hardware path:
 
-1. Add a downstream macro for the first desktop target, for example:
+1. A downstream macro enables the first desktop target:
 
    ```spec
    %global protagonist_desktop_gallium 1
    ```
 
-2. Make the Meson Gallium driver selection prefer that narrow path:
+2. The Meson Gallium driver selection prefers that narrow path before the broad `with_hardware` branch:
 
    ```spec
    %if 0%{?protagonist_desktop_gallium}
-     -Dgallium-drivers=swrast,virgl,iris,radeonsi \
+     -Dgallium-drivers=%{protagonist_gallium_drivers} \
    %elif 0%{?with_hardware}
      -Dgallium-drivers=swrast,virgl,nouveau...
    %else
@@ -139,7 +139,7 @@ For the first patch, use a ProtagonistOS-specific narrow hardware path:
    %endif
    ```
 
-3. Add matching file ownership for the new DRI artifacts without requiring the full `with_hardware` branch:
+3. Matching file ownership for the new DRI artifacts exists without requiring the full `with_hardware` branch:
 
    ```spec
    %if 0%{?protagonist_desktop_gallium}
@@ -152,11 +152,13 @@ For the first patch, use a ProtagonistOS-specific narrow hardware path:
    %endif
    ```
 
-4. Leave VAAPI and VDPAU disabled for the first patch unless a test build proves those outputs are required by the initial KDE session bring-up.
+4. VAAPI and VDPAU remain disabled for the first patch unless a test build proves those outputs are required by the initial KDE session bring-up.
 
-5. Leave older Intel (`crocus`, `i915`) and older AMD (`r600`) out of the first acceptance gate unless the first hardware validation matrix explicitly includes those GPU generations.
+5. Older Intel (`crocus`, `i915`) and older AMD (`r600`) remain out of the first acceptance gate unless the first hardware validation matrix explicitly includes those GPU generations.
 
 This keeps the first Mesa divergence easy to review: one existing spec, a narrow driver list, and two expected new DRI artifacts.
+
+On x86 and x86_64, `%{protagonist_gallium_drivers}` expands to `swrast,virgl,iris,radeonsi`. On non-s390x non-x86 architectures, it omits `iris` and expands to `swrast,virgl,radeonsi`.
 
 ## Build Impact
 
@@ -234,10 +236,12 @@ Expected result:
 
 ## Decision
 
-The next implementation branch should modify only `SPECS/mesa/mesa.spec` and should enable the narrow Gallium set:
+The first implementation branch modifies only `SPECS/mesa/mesa.spec` for Mesa itself and enables the narrow x86/x86_64 Gallium set:
 
 ```text
 swrast,virgl,iris,radeonsi
 ```
+
+The next required action is a Linux-host package build of `mesa`, followed by inspection of `mesa-dri-drivers` ownership for `iris_dri.so` and `radeonsi_dri.so`.
 
 That patch is the first real desktop-enablement code change for ProtagonistOS.

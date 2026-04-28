@@ -3,7 +3,7 @@ title: Installer and ISO Path
 status: active
 source_of_truth: github
 branch: dev
-last_reviewed: 2026-04-27
+last_reviewed: 2026-04-28
 drive_copy: none
 source_inputs:
   - GitHub Issue #5
@@ -12,6 +12,7 @@ source_inputs:
   - toolkit/imageconfigs/full.json
   - toolkit/docs/building/building.md
   - toolkit/docs/how_it_works/4_image_generation.md
+  - GitHub Issue #19
 ---
 
 # Installer and ISO Path
@@ -187,6 +188,32 @@ The first Linux host is not defined by this document, but the image path assumes
 - `sudo` access for image build steps that require loop devices, chroot, or filesystem operations.
 - stable network access for any package/toolchain downloads not already cached.
 - recorded host distro, kernel, CPU, memory, disk, filesystem, and available free space.
+
+## Linux Hardware Build Handoff
+
+Local macOS preparation can validate repository state, documentation, and patch shape, but it cannot execute the Azure Linux package or image build pipeline.
+
+GitHub Issue #19 tracks the actual Linux hardware execution. When Linux hardware is available, run these checks from the repository root:
+
+```bash
+./scripts/validate-project-state.sh
+sudo make build-packages \
+  CONFIG_FILE=toolkit/imageconfigs/core-efi.json \
+  PACKAGE_BUILD_LIST=mesa \
+  REBUILD_TOOLS=y
+sudo make image \
+  CONFIG_FILE=toolkit/imageconfigs/core-efi.json \
+  REBUILD_TOOLS=y
+```
+
+Capture:
+
+- host distro, kernel, CPU, memory, filesystem, and free disk space
+- exact commit SHA and branch
+- the first package build failure, if any
+- the first image build failure, if any
+- whether failures are environment/tooling failures or project-content failures
+- `rpm -ql mesa-dri-drivers | rg 'iris_dri|radeonsi_dri|swrast_dri|virtio_gpu_dri'` output after a successful Mesa build
 
 ## Current First Artifact
 

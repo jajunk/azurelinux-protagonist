@@ -3,7 +3,7 @@ title: ProtagonistOS Technical Status
 status: active
 source_of_truth: github
 branch: dev
-last_reviewed: 2026-04-27
+last_reviewed: 2026-04-28
 drive_copy: none
 source_inputs:
   - AGENTS.md
@@ -59,13 +59,12 @@ Mesa hardware acceleration is the first hard blocker.
 Current inspection result:
 
 - `SPECS/mesa/mesa.spec` sets `with_hardware` to `0`.
-- The active Gallium driver list is `swrast,virgl`.
-- `iris` and `radeonsi` macros exist but are not effective while `with_hardware` remains disabled.
-- The recommended first patch is a narrow ProtagonistOS Gallium path: `swrast,virgl,iris,radeonsi`.
+- The upstream-default Gallium driver list is `swrast,virgl`.
+- The local ProtagonistOS patch adds a narrow downstream x86/x86_64 Gallium path: `swrast,virgl,iris,radeonsi`.
+- `iris` and `radeonsi` are now selected without enabling the broader latent `with_hardware` path.
 
 Required first work:
 
-- implement the Mesa spec patch described in `docs/current-state/mesa-hardware-driver-plan.md`
 - rebuild Mesa on a Linux host
 - confirm expected DRI artifacts are present
 - validate hardware rendering on Intel and AMD systems
@@ -117,14 +116,15 @@ The initial documentation sprint has enough information to close the first plann
 
 Next implementation issues should be:
 
-1. Patch `SPECS/mesa/mesa.spec` to enable the narrow ProtagonistOS Gallium set: `swrast,virgl,iris,radeonsi`.
-2. Define the first Linux build host.
-3. Import or package `qtwayland`.
-4. Import or package `libdisplay-info`.
-5. Import or package `xdg-desktop-portal`.
-6. Import or package `wireplumber`.
-7. Expand the KDE Frameworks dependency list from actual KWin and Plasma Workspace build requirements.
-8. Define the first hardware validation matrix.
+1. Build the patched Mesa package on Linux and inspect `mesa-dri-drivers`.
+2. Attempt the first `core-efi.json` image build on Linux hardware.
+3. Define the first Linux build host as the canonical build environment.
+4. Import or package `qtwayland`.
+5. Import or package `libdisplay-info`.
+6. Import or package `xdg-desktop-portal`.
+7. Import or package `wireplumber`.
+8. Expand the KDE Frameworks dependency list from actual KWin and Plasma Workspace build requirements.
+9. Define the first hardware validation matrix.
 
 ## Open Decisions
 

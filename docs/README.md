@@ -13,6 +13,7 @@ Google Drive is a secondary archive/reference layer. GitHub Issues are the activ
 - Mark all Drive copies as non-authoritative unless they are later promoted back into this repository.
 - Keep stale experiments in `docs/archive/` rather than deleting useful history.
 - Follow the branch and upstream synchronization rules in [ADR-0002](decisions/ADR-0002-branching-upstream-sync-and-access-policy.md).
+- Run `./scripts/validate-project-state.sh` after branch, workflow, dashboard, or source-of-truth documentation changes.
 - Every document should answer at least one concrete question:
   - What is currently true?
   - What did we decide?

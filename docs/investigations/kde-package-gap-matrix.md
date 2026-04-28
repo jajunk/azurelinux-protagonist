@@ -3,7 +3,7 @@ title: KDE Package Gap Matrix
 status: active
 source_of_truth: github
 branch: dev
-last_reviewed: 2026-04-27
+last_reviewed: 2026-04-28
 drive_copy: none
 source_inputs:
   - GitHub Issue #3
@@ -137,16 +137,34 @@ Required before KDE packaging work is meaningful:
 - verify `mesa-dri-drivers` owns the expected DRI files
 - validate renderer on Intel and AMD hardware
 
-### Tranche 1: Desktop Prerequisites
+### Tranche 1: First Packaging Tranche
 
-Package or promote:
+The first packaging tranche is intentionally limited to non-Plasma desktop prerequisites that unblock later KWin and Plasma work without pulling the full shell into scope.
 
-- `libdisplay-info`
-- `xdg-desktop-portal`
-- `libseat` if KDE/KWin bring-up needs it beyond `systemd-logind`
-- `wireplumber`
-- `qtwayland`
-- `kde-filesystem` promotion decision
+Build/import order:
+
+| Order | Package | Work type | Why now |
+|---:|---|---|---|
+| 1 | `qtwayland` | new add or import | Critical Qt 6 Wayland client/compositor support for KDE session work |
+| 2 | `libdisplay-info` | new add or import | Modern display metadata dependency expected by compositor/display stack components |
+| 3 | `xdg-desktop-portal` | new add or import | Base portal service required before KDE portal backend and real desktop integration |
+| 4 | `wireplumber` | new add or import | PipeWire session manager for the modern desktop audio/video baseline |
+| 5 | `kde-filesystem` | promotion decision from `SPECS-EXTENDED/` | Filesystem ownership substrate for KDE packages if core KDE specs land in `SPECS/` |
+| 6 | `libseat` | conditional new add | Keep deferred unless KWin bring-up or source dependencies prove `systemd-logind` alone is insufficient |
+
+Dependency assumptions:
+
+- `qtwayland` should be attempted first because Azure Linux already carries Qt 6 base components.
+- `xdg-desktop-portal-kde` is deferred until the base portal package and more KDE Frameworks are present.
+- `wireplumber` should consume the existing `pipewire` package from `SPECS-EXTENDED/` or force an explicit promotion decision if image composition requires it.
+- `libseat` and `seatd` are not first-day blockers if the first compositor/session tests can rely on `systemd-logind`.
+
+Deferred from Tranche 1:
+
+- Plasma/KWin packages: `kwin`, `plasma-workspace`, `plasma-desktop`, `sddm`
+- KDE portal backend: `xdg-desktop-portal-kde`
+- KDE usability layer: `breeze`, `qqc2-desktop-style`, `kscreen`, `powerdevil`, `konsole`, `dolphin`, `systemsettings`
+- Full KDE Frameworks expansion beyond packages proven by actual KWin and Plasma Workspace build requirements
 
 ### Tranche 2: KDE Framework Expansion
 
