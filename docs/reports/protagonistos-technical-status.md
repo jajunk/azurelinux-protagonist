@@ -10,6 +10,7 @@ source_inputs:
   - README.md
   - docs/current-state/azure-linux-baseline.md
   - docs/current-state/desktop-performance-reality.md
+  - docs/current-state/github-branch-dashboard-state.md
   - docs/current-state/installer-and-iso-path.md
   - docs/current-state/mesa-hardware-driver-plan.md
   - docs/investigations/azure-linux-desktop-gaps.md
@@ -34,7 +35,9 @@ The Git repository is authoritative.
 
 Google Drive is archive/reference. GitHub Issues should become the active task board. Google Calendar should become the time-planning surface.
 
-The active ProtagonistOS integration branch is `dev`. Stable project state lives on `main`. The `3.0` branch is reserved as a pristine Azure Linux upstream mirror. The previous `sandbox` branch is legacy and should not receive new project work.
+The active ProtagonistOS integration branch is `dev`. Stable project state lives on `main`, which is also the live GitHub default branch. The `3.0` branch is reserved as a pristine Azure Linux upstream mirror. The previous `sandbox` branch is legacy and should not receive new project work.
+
+The dashboard publishes through the GitHub Pages workflow on `main`. The latest verification is captured in `docs/current-state/github-branch-dashboard-state.md`.
 
 ## Current Technical Direction
 
@@ -84,6 +87,7 @@ Active current-state docs:
 - `docs/current-state/azure-linux-baseline.md`
 - `docs/current-state/desktop-performance-reality.md`
 - `docs/current-state/environment-setup.md`
+- `docs/current-state/github-branch-dashboard-state.md`
 - `docs/current-state/installer-and-iso-path.md`
 - `docs/current-state/mesa-hardware-driver-plan.md`
 

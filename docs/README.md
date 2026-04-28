@@ -27,6 +27,7 @@ Use this section for documents that describe the current technical reality of Pr
 - [Azure Linux baseline](current-state/azure-linux-baseline.md)
 - [Desktop performance reality](current-state/desktop-performance-reality.md)
 - [Environment setup](current-state/environment-setup.md)
+- [GitHub branch and dashboard publication state](current-state/github-branch-dashboard-state.md)
 - [Installer and ISO path](current-state/installer-and-iso-path.md)
 - [Mesa hardware driver plan](current-state/mesa-hardware-driver-plan.md)
 
